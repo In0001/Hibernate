@@ -88,11 +88,12 @@ public class Main {
     public static void deletePersonFromFlat(int person_id, int flat_id) throws SQLException {
         System.out.println("Выписывание из квартиры");
         PersonService personService = new PersonService();
-        FlatService flatService = new FlatService();
         Person person = personService.findPerson(person_id);
-        Flat flat = flatService.findFlat(flat_id);
         List<Flat> flats = person.getFlatsWithRegistration().stream().distinct().collect(Collectors.toList());
-        flats.remove(flat);
+        for (Flat flat: flats) {
+            if (flat.getId()==flat_id)
+                flats.remove(flat);
+        }
         person.setFlatsWithRegistration(flats);
         personService.updatePerson(person);
     }
@@ -146,11 +147,11 @@ public class Main {
         printDelimiter();
         deletePersonFromFlat(13, 7);
         printDelimiter();
-        //registerPersonInTheFlat(13, 7);
+        registerPersonInTheFlat(13, 7);
         printDelimiter();
-        //moveToNewFlat(4, 1);
+        moveToNewFlat(3, 7);
         printDelimiter();
-        //changeFlats(1, 3);
+        changeFlats(1, 3);
     }
 }
 

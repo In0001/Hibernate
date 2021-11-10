@@ -14,7 +14,7 @@ public class Flat {
     private int id;
 
     @Column(name = "flat_number")
-    private String flatNumber;
+    private int flatNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "house")
@@ -55,7 +55,7 @@ public class Flat {
     public Flat() {
     }
 
-    public Flat(String flatNumber, House house) {
+    public Flat(int flatNumber, House house) {
         this.flatNumber = flatNumber;
         this.house = house;
         flatOwners = new ArrayList<>();
@@ -70,11 +70,11 @@ public class Flat {
         this.id = id;
     }
 
-    public String getFlatNumber() {
+    public int getFlatNumber() {
         return flatNumber;
     }
 
-    public void setFlatNumber(String flatNumber) {
+    public void setFlatNumber(int flatNumber) {
         this.flatNumber = flatNumber;
     }
 
