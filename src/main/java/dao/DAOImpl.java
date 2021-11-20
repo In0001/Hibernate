@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 import utils.HibernateSessionFactoryUtil;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class DAOImpl {
     private Session currentSession;
@@ -12,11 +13,20 @@ public class DAOImpl {
 
     public Session openCurrentSession() {
         currentSession = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        currentTransaction = currentSession.beginTransaction();
         return currentSession;
     }
 
     public void closeCurrentSession() {
+        currentSession.close();
+    }
+
+    public Session openCurrentSessionWithTransaction() {
+        currentSession = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        currentTransaction = currentSession.beginTransaction();
+        return currentSession;
+    }
+
+    public void closeCurrentSessionWithTransaction() {
         currentTransaction.commit();
         currentSession.close();
     }
@@ -37,23 +47,35 @@ public class DAOImpl {
         this.currentTransaction = currentTransaction;
     }
 
+    private void executeTransaction(Consumer<Session> action) {
+        openCurrentSessionWithTransaction();
+        action.accept(currentSession);
+        closeCurrentSessionWithTransaction();
+    }
+
     public <T> T findById(Class<T> entityClass, int id) {
-        return (T) getCurrentSession().get(entityClass, id);
+        openCurrentSession();
+        T model = (T) getCurrentSession().get(entityClass, id);
+        closeCurrentSession();
+        return model;
     }
 
     public <T> void save(final T entity) {
-        getCurrentSession().save(entity);
+        executeTransaction(currentSession -> currentSession.save(entity));
     }
 
     public <T> void update(final T entity) {
-        getCurrentSession().update(entity);
+        executeTransaction(currentSession -> currentSession.update(entity));
     }
 
     public <T> void delete(final T entity) {
-        getCurrentSession().delete(entity);
+        executeTransaction(currentSession -> currentSession.delete(entity));
     }
 
     public <T> List<T> findAll(Class<T> entityClass) {
-        return (List<T>) getCurrentSession().createQuery("from " + entityClass.getName()).list();
+        openCurrentSession();
+        List<T> modelList = (List<T>) getCurrentSession().createQuery("from " + entityClass.getName()).list();
+        closeCurrentSession();
+        return modelList;
     }
 }

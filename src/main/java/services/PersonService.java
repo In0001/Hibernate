@@ -14,34 +14,22 @@ public class PersonService {
     }
 
     public Person findPerson(int id) {
-        personsDAO.openCurrentSession();
-        Person person = personsDAO.findById(Person.class, id);
-        personsDAO.closeCurrentSession();
-        return person;
+        return personsDAO.findById(Person.class, id);
     }
 
     public void savePerson(Person person) {
-        personsDAO.openCurrentSession();
-        personsDAO.save( person);
-        personsDAO.closeCurrentSession();
+        personsDAO.save(person);
     }
 
     public void deletePerson(Person person) {
-        personsDAO.openCurrentSession();
         personsDAO.delete(person);
-        personsDAO.closeCurrentSession();
     }
 
     public void updatePerson(Person person) {
-        personsDAO.openCurrentSession();
         personsDAO.update(person);
-        personsDAO.closeCurrentSession();
     }
 
     public List<Person> findAllPersons() {
-        personsDAO.openCurrentSession();
-        List<Person> persons = personsDAO.findAll(Person.class);
-        personsDAO.closeCurrentSession();
-        return persons;
+        return personsDAO.findAll(Person.class);
     }
 }

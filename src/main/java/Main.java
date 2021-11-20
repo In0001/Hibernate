@@ -134,7 +134,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws SQLException {
-        findPeopleRegisteredInGivenFlat(4);
+        findPeopleRegisteredInGivenFlat(1);
         printDelimiter();
         findPeopleOwningGivenFlat(7);
         printDelimiter();

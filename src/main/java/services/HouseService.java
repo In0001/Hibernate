@@ -14,34 +14,22 @@ public class HouseService {
     }
 
     public House findHouse(int id) {
-        housesDAO.openCurrentSession();
-        House house = housesDAO.findById(House.class, id);
-        housesDAO.closeCurrentSession();
-        return house;
+        return housesDAO.findById(House.class, id);
     }
 
     public void saveHouse(House house) {
-        housesDAO.openCurrentSession();
         housesDAO.save(house);
-        housesDAO.closeCurrentSession();
     }
 
     public void deleteHouse(House house) {
-        housesDAO.openCurrentSession();
         housesDAO.delete(house);
-        housesDAO.closeCurrentSession();
     }
 
     public void updateHouse(House house) {
-        housesDAO.openCurrentSession();
         housesDAO.update(house);
-        housesDAO.closeCurrentSession();
     }
 
     public List<House> findAllHouses() {
-        housesDAO.openCurrentSession();
-        List<House> houses = housesDAO.findAll(House.class);
-        housesDAO.closeCurrentSession();
-        return houses;
+        return housesDAO.findAll(House.class);
     }
 }
